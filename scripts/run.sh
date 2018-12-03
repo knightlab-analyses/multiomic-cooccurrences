@@ -12,7 +12,7 @@ beta1=0.85
 beta2=0.90
 batch_size=1000
 
-RESULTS_DIR=$CURPATH/results/test_latent_dim_${latent_dim}_in_${inprior}_out_${outprior}_beta1_${beta1}_beta2_${beta2}
+RESULTS_DIR=$CURPATH/results/latent_dim_${latent_dim}_in_${inprior}_out_${outprior}_beta1_${beta1}_beta2_${beta2}
 minstrel autoencoder \
       --microbe-file $microbe_file \
       --metabolite-file $metabolite_file \

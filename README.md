@@ -15,6 +15,8 @@ The notebooks are mainly for analyzing the fitted model.  They are given in the 
 - biplot-coordinates.ipynb : Calculate biplot coordinates to visualize co-occurence probabilities in Emperor
 - cf-figures.ipynb : Recreate the figures shown in the original paper
 
+# Results
+This folder contains the checkpoints and diagnostics generated from the command provided in the scripts folder.
 
 # Data files
 - lcms_annotations.txt : GNPS annotations for MS2 spectra
