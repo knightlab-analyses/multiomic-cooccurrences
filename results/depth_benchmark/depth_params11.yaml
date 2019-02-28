@@ -1,0 +1,34 @@
+benchmark: effect_size
+intervals: 3
+latent_dim: 1
+metabolite_kappa: &id001
+- 0.01
+- 0.1
+- 1
+metabolite_total: 1000000000.0
+microbe_kappa: *id001
+microbe_total: 500.0
+modes:
+- abs
+- rel
+num_metabolites: 50
+num_microbes: 50
+num_samples: 126
+output_dir: depth_benchmark11/
+reps: 1
+samples:
+- 0_a
+- 0_a
+- 1_a
+sigmaQ: 1
+sigmaU: 1
+sigmaV: 1
+timepoint: 9
+tools:
+- deep_mae
+- pearson
+- spearman
+top_MS: 20
+top_OTU: 20
+uU: 0
+uV: 0
