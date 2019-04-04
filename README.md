@@ -25,15 +25,16 @@ The notebooks for producing the figures in the manuscript.  They are given as fo
 # Results
 This folder contains the checkpoints and diagnostics generated from the command provided in the scripts folder.
 
- - depth_benchmark
- - effect_size_benchmark
- - cf_output
- - hfd_output
- - soil_output
+ - depth_benchmark : simulation dataset used for the roc-curve analysis on mmvec, spiec-easi, pearson and spearman
+ - effect_size_benchmark : simulation dataset used for the scale invariance analysis on mmvec, spiec-easi, pearson and spearman
+ - cf_output : cystic fibrosis model results with mmvec and pearson
+ - soil_output : biocrust model results with mmvec, spearman and spiec-easi
+ - hfd_output : high fat diet model results with mmvec and pearson
 
 # Data files
- - lcms_annotations.txt : GNPS annotations for MS2 spectra
- - lcms_nt.biom : MS1 bucket table of metabolite abundances
- - otus_nt.biom : Deblurred biom for microbe abundances
- - taxonomy.tsv : taxonomic annotations for microbes
- - validated-molecules.csv : validated annotations for spectra
+All the data required to reproduce the analysis can be found under `data/`.
+
+ - cf_sim : cystic fibrosis biofilm simulations generated from partial differential equations run in matlab using https://github.com/zhangzhongxun/WinCF_model_Code
+ - CF : cystic fibrosis data on oxygen gradients.  This includes 16S, metabolomics, taxonomies, sample metadata and LCMS annotations
+ - soils : 16S and metabolomics abundances for biocrust study
+ - HFD : high fat diet study on mice. 16S, metabolomics, taxonomies, sample metadata and LCMS annotations
