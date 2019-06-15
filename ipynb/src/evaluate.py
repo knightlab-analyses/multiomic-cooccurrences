@@ -4,6 +4,7 @@ from os.path import basename, splitext
 import numpy as np
 from scipy.stats import spearmanr
 from skbio.stats.composition import clr_inv
+from collections import defaultdict
 
 
 def rank_accuracy(res, exp, top_N):
@@ -193,26 +194,6 @@ def _edge_roc_curve(ranks, edges, k_max=10, axis=1):
     k_high : int
         Maximum number of nearest neighbors to evaluate.
 
-    Returns
-    -------
-    pos_results : pd.DataFrame
-        TP : np.array
-            List of True positives for each k
-        TN : np.array
-            List of True negatives for each k
-        FP : np.array
-            List of False positives for each k
-        FN : np.array
-            List of False negatives for each k
-    neg_results : pd.DataFrame
-        TP : np.array
-            List of True positives for each k
-        TN : np.array
-            List of True negatives for each k
-        FP : np.array
-            List of False positives for each k
-        FN : np.array
-            List of False negatives for each k
     """
     all_edges = set(map(tuple, edges[['microbe', 'metabolite']].values))
 
@@ -228,47 +209,37 @@ def _edge_roc_curve(ranks, edges, k_max=10, axis=1):
         )
     )
     sranks.index=ranks.index
-
+    res = defaultdict(list)
     idx = np.arange(1, k_max+1)
+
     for k in idx:
         # assume axis 1 only, since we can only rank metabolites
         # if axis == 1:
+
         pos_edges = sranks.iloc[:, -k:].stack().reset_index()[['level_0', 0]]
-        res_pos_edges = pos_edges.rename(
+        res_edges = pos_edges.rename(
             columns={'level_0': 'microbe', 0: 'metabolite'})
 
-        neg_edges = sranks.iloc[:, :k].stack().reset_index()[['level_0', 0]]
-        res_neg_edges = neg_edges.rename(
-            columns={'level_0': 'microbe', 0: 'metabolite'})
+        for c in ['R', 'C', 'I']:
+            exp_pos_edges = edges.loc[edges.direction==c]
+            exp_pos_edges = set(
+                map(tuple, exp_pos_edges[['metabolite', 'microbe']].values)
+            )
 
-        exp_pos_edges = edges.loc[edges.direction==1]
-        exp_neg_edges = edges.loc[edges.direction==-1]
+            res_pos_edges = set(
+                map(tuple, res_edges[['metabolite', 'microbe']].values)
+            )
+            print('k', k, 'res edges', len(res_pos_edges))
+            # take an intersection of all of the positive edges
+            TP = len(exp_pos_edges & res_pos_edges)
+            print('TP', TP)
+            TN = len((all_edges - exp_pos_edges) & (all_edges - res_pos_edges))
+            FP = len(res_pos_edges - exp_pos_edges)
+            FN = len(exp_pos_edges - res_pos_edges)
+            res[c].append({'TP': TP, 'TN': TN, 'FP': FP, 'FN': FN})
 
-        exp_pos_edges = set(
-            map(tuple, exp_pos_edges[['metabolite', 'microbe']].values))
-        exp_neg_edges = set(
-            map(tuple, exp_neg_edges[['metabolite', 'microbe']].values))
+    released_res = pd.DataFrame(res['R'], index=idx)
+    consumed_res = pd.DataFrame(res['C'], index=idx)
+    inhibited_res = pd.DataFrame(res['I'], index=idx)
 
-        res_pos_edges = set(
-            map(tuple, res_pos_edges[['metabolite', 'microbe']].values))
-        res_neg_edges = set(
-            map(tuple, res_neg_edges[['metabolite', 'microbe']].values))
-
-        # take an intersection of all of the positive edges
-        TP = len(exp_pos_edges & res_pos_edges)
-        TN = len((all_edges - exp_pos_edges) & (all_edges - res_pos_edges))
-        FP = len(res_pos_edges - exp_pos_edges)
-        FN = len(exp_pos_edges - res_pos_edges)
-        pos_results.append({'TP': TP, 'TN': TN, 'FP': FP, 'FN': FN})
-
-        # take an intersection of all of the negative edges
-        TP = len(exp_neg_edges & res_neg_edges)
-        TN = len((all_edges - exp_neg_edges) & (all_edges - res_neg_edges))
-        FP = len(res_neg_edges - exp_neg_edges)
-        FN = len(exp_neg_edges - res_neg_edges)
-        neg_results.append({'TP': TP, 'TN': TN, 'FP': FP, 'FN': FN})
-
-
-    pos_results = pd.DataFrame(pos_results, index=idx)
-    neg_results = pd.DataFrame(neg_results, index=idx)
-    return pos_results, neg_results
+    return released_res, consumed_res, inhibited_res

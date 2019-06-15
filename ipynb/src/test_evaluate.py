@@ -27,30 +27,39 @@ class TestEvaluateBiofilm(unittest.TestCase):
 
         self.edges = pd.DataFrame(
             {
-                'microbe': ['A', 'A', 'B', 'C'],
-                'metabolite': ['a', 'b', 'a', 'd'],
-                'direction': [0, -1, 1, 1]
+                'microbe': ['A', 'A', 'B', 'C', 'B'],
+                'metabolite': ['a', 'b', 'a', 'd', 'd'],
+                'direction': [0, 'I', 'R', 'C', 'C']
             }
         )
 
     def test_edge_roc_curve(self):
-        res_pos, res_neg = _edge_roc_curve(self.ranks.T, self.edges, k_max=2)
 
-        exp_pos = pd.DataFrame(
-            [[1, 2, 4, 1],
-             [0, 4, 4, 2]],
+        resR, resC, resI = _edge_roc_curve(self.ranks.T, self.edges, k_max=2)
+
+        expR = pd.DataFrame(
+            [[0, 5, 5, 1],
+             [0, 5, 5, 1]],
             columns=['FN', 'FP', 'TN', 'TP'],
             index=[1, 2]
         )
-        pdt.assert_frame_equal(res_pos, exp_pos)
+        pdt.assert_frame_equal(resR, expR)
 
-        exp_neg = pd.DataFrame(
-            [[0, 2, 4, 1],
-             [0, 5, 4, 1]],
+        expC = pd.DataFrame(
+            [[1, 5, 5, 1],
+             [1, 5, 5, 1]],
             columns=['FN', 'FP', 'TN', 'TP'],
             index=[1, 2]
         )
-        pdt.assert_frame_equal(res_neg, exp_neg)
+        pdt.assert_frame_equal(resC, expC)
+
+        expI = pd.DataFrame(
+            [[1, 6, 5, 0],
+             [1, 6, 5, 0]],
+            columns=['FN', 'FP', 'TN', 'TP'],
+            index=[1, 2]
+        )
+        pdt.assert_frame_equal(resI, expI)
 
 
 if __name__ == "__main__":
