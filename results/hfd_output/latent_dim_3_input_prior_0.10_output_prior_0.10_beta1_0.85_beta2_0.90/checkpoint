@@ -1,6 +1,0 @@
-model_checkpoint_path: "/Users/jmorton/Documents/dev/multiomic-cooccurences/results/hfd_output/latent_dim_3_input_prior_0.10_output_prior_0.10_beta1_0.85_beta2_0.90/model.ckpt-3729909"
-all_model_checkpoint_paths: "/Users/jmorton/Documents/dev/multiomic-cooccurences/results/hfd_output/latent_dim_3_input_prior_0.10_output_prior_0.10_beta1_0.85_beta2_0.90/model.ckpt-2900113"
-all_model_checkpoint_paths: "/Users/jmorton/Documents/dev/multiomic-cooccurences/results/hfd_output/latent_dim_3_input_prior_0.10_output_prior_0.10_beta1_0.85_beta2_0.90/model.ckpt-3110706"
-all_model_checkpoint_paths: "/Users/jmorton/Documents/dev/multiomic-cooccurences/results/hfd_output/latent_dim_3_input_prior_0.10_output_prior_0.10_beta1_0.85_beta2_0.90/model.ckpt-3316328"
-all_model_checkpoint_paths: "/Users/jmorton/Documents/dev/multiomic-cooccurences/results/hfd_output/latent_dim_3_input_prior_0.10_output_prior_0.10_beta1_0.85_beta2_0.90/model.ckpt-3520707"
-all_model_checkpoint_paths: "/Users/jmorton/Documents/dev/multiomic-cooccurences/results/hfd_output/latent_dim_3_input_prior_0.10_output_prior_0.10_beta1_0.85_beta2_0.90/model.ckpt-3729909"
