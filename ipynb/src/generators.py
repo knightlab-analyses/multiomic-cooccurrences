@@ -457,12 +457,12 @@ def random_multimodal(num_microbes=20, num_metabolites=100, num_samples=100,
 
 def ground_truth_edges(microbe_df, metabolite_df):
     """ Hard coded example of edges. """
-    interactions = {('theta_f', 'SG'): 1,
-                    ('theta_f', 'F'): 1,
-                    ('theta_f', 'I'): -1,
-                    ('theta_p', 'I'): 1,
-                    ('theta_p', 'SA'): 1,
-                    ('theta_p', 'P'): 1}
+    interactions = {('theta_f', 'SG'): 'C',
+                    ('theta_f', 'F'): 'R',
+                    ('theta_f', 'I'): 'I',
+                    ('theta_p', 'I'): 'R',
+                    ('theta_p', 'SA'): 'C',
+                    ('theta_p', 'P'): 'R'}
 
     strains = list(map(lambda x: '_'.join(x.split('_')[:-1]), microbe_df.columns))
     chemicals = list(map(lambda x: '_'.join(x.split('_')[:-1]), metabolite_df.columns))
@@ -470,7 +470,7 @@ def ground_truth_edges(microbe_df, metabolite_df):
     for i, otu in enumerate(strains):
         for j, ms in enumerate(chemicals):
             if (otu, ms) not in interactions.keys():
-                edges.append((microbe_df.columns[i], metabolite_df.columns[j], 0))
+                edges.append((microbe_df.columns[i], metabolite_df.columns[j], '0'))
             else:
                 direction = interactions[(otu, ms)]
                 edges.append((microbe_df.columns[i], metabolite_df.columns[j], direction))
