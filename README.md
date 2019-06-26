@@ -13,6 +13,20 @@ It is also recommended to run Tensorboard in parallel in order to monitor the co
 
 # Notebooks
 The notebooks for producing the figures in the manuscript.  They are given as follows
+Figure2-simulation.ipynb
+Figure2.ipynb
+Figure2_biofilm.ipynb
+Figure2a.ipynb
+Figure3.ipynb
+Figure4.ipynb
+Figure5.ipynb
+Figure6.ipynb
+FigureS2.ipynb
+benchmark-simulations.ipynb
+biplot-coordinates.ipynb
+recover-CF-parameters.ipynb
+src
+
  - ipynb/Figure2/biofilm.ipynb: The creation of the biofilm simulation
  - ipynb/Figure2/roc-curve.ipynb: The roc curve analysis
  - ipynb/Figure2/scale-benchmarks.ipynb: The scale-invariance benchmark analysis
