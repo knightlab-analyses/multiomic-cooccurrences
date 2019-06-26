@@ -34,7 +34,7 @@ This folder contains the checkpoints and diagnostics generated from the command 
 # Data files
 All the data required to reproduce the analysis can be found under `data/`.
 
- - cf_sim : cystic fibrosis biofilm simulations generated from partial differential equations run in matlab using https://github.com/zhangzhongxun/WinCF_model_Code
+ - cf_sim : cystic fibrosis biofilm simulations generated from partial differential equations run in matlab using https://github.comoo/zhangzhongxun/WinCF_model_Code
  - CF : cystic fibrosis data on oxygen gradients.  This includes 16S, metabolomics, taxonomies, sample metadata and LCMS annotations
  - soils : 16S and metabolomics abundances for biocrust study
  - HFD : high fat diet study on mice. 16S, metabolomics, taxonomies, sample metadata and LCMS annotations
