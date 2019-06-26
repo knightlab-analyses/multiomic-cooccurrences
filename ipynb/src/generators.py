@@ -457,18 +457,20 @@ def random_multimodal(num_microbes=20, num_metabolites=100, num_samples=100,
 
 def ground_truth_edges(microbe_df, metabolite_df):
     """ Hard coded example of edges. """
-    interactions = {('theta_f', 'SG'): 1,
-                    ('theta_f', 'F'): 1,
-                    ('theta_f', 'I'): -1,
-                    ('theta_p', 'SA'): 1,
-                    ('theta_p', 'P'): 1}
+    interactions = {('theta_f', 'SG'): 'C',
+                    ('theta_f', 'F'): 'R',
+                    ('theta_f', 'I'): 'I',
+                    ('theta_p', 'I'): 'R',
+                    ('theta_p', 'SA'): 'C',
+                    ('theta_p', 'P'): 'R'}
+
     strains = list(map(lambda x: '_'.join(x.split('_')[:-1]), microbe_df.columns))
     chemicals = list(map(lambda x: '_'.join(x.split('_')[:-1]), metabolite_df.columns))
     edges = []
     for i, otu in enumerate(strains):
         for j, ms in enumerate(chemicals):
             if (otu, ms) not in interactions.keys():
-                edges.append((microbe_df.columns[i], metabolite_df.columns[j], 0))
+                edges.append((microbe_df.columns[i], metabolite_df.columns[j], '0'))
             else:
                 direction = interactions[(otu, ms)]
                 edges.append((microbe_df.columns[i], metabolite_df.columns[j], direction))
@@ -481,7 +483,7 @@ def random_biofilm(table, uU, sigmaU, uV, sigmaV, sigmaQ,
                    microbe_total, microbe_kappa,
                    microbe_tau,
                    metabolite_total, metabolite_kappa,
-                   metabolite_tau,
+                   metabolite_tau, microbe_rate,
                    seed=0):
     """ Generate random biofilm simulation.
 
@@ -518,6 +520,10 @@ def random_biofilm(table, uU, sigmaU, uV, sigmaV, sigmaQ,
         Dispersion factor for individual metabolites
     metabolite_tau : float
         Dispersion factor for total metabolite load
+    microbe_rate : float
+        Parameter for microbe exponential distribution.
+        This is for parameterizing the partitioning of microbes
+        within each species.
     seed : float
        Random seed
 
@@ -545,11 +551,12 @@ def random_biofilm(table, uU, sigmaU, uV, sigmaV, sigmaQ,
     odfs = []
     mdfs = []
     edges = []
+    partition_mean = state.exponential(microbe_rate, size=num_microbes-1)
     for otu, spectra in pairs:
 
         # partition the microbes
         microbes_out = partition_microbes(
-            num_microbes, sigmaQ, table[otu].values, state
+            num_microbes, sigmaQ, table[otu].values, partition_mean, state
         )
 
         # partition the metabolites
@@ -575,6 +582,21 @@ def random_biofilm(table, uU, sigmaU, uV, sigmaV, sigmaQ,
                      for i in range(microbes_out.shape[1])]
         )
         odfs.append(microbes_df)
+
+    # append standard lognormal white noise to the dataset
+    noise_microbes = pd.DataFrame(
+        closure(state.lognormal(size=(table.shape[0], 2*num_microbes)))/10,
+        columns=['noise_otu_%d' % i
+                 for i in range(2*num_microbes)]
+    )
+    odfs.append(noise_microbes)
+
+    noise_metabolites = pd.DataFrame(
+        closure(state.lognormal(size=(table.shape[0], 2*num_metabolites)))/10,
+        columns=['noise_ms_%d' % i
+                 for i in range(2*num_metabolites)]
+    )
+    mdfs.append(noise_metabolites)
 
     ## Helper functions
     # Convert microbial abundances to counts

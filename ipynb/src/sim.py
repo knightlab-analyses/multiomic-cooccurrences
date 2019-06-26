@@ -191,7 +191,7 @@ def parse_data(files):
     return df
 
 
-def partition_microbes(num_microbes, sigmaQ, microbe_in, state):
+def partition_microbes(num_microbes, sigmaQ, microbe_in, mean, state):
     """ Split up a single microbe abundances into multiple strains.
 
     Parameters
@@ -213,11 +213,10 @@ def partition_microbes(num_microbes, sigmaQ, microbe_in, state):
     num_samples = len(microbe_in)
 
     a = state.multivariate_normal(
-            mean=np.zeros(num_microbes-1),
+            mean=mean,
             cov=np.diag([sigmaQ] * (num_microbes-1)),
             size=num_samples
     )
-
     microbe_partition = ilr_inv(a)
 
     microbes_out = np.multiply(microbe_partition,
