@@ -3,7 +3,7 @@
 This repository holds the analysis scripts and cystic fibrosis datasets to showcase the utility of applying neural networks to learn multi-omics cooccurences.
 
 # Run scripts
-The scripts within the `scripts` folder contains scripts used to run `rhapsody mmvec` for co-occurrrence analysis and `songbird multinomial` for differential abundance.
+The scripts within the `scripts` folder contains scripts used to run `mmvec` for co-occurrrence analysis and `songbird multinomial` for differential abundance.
 Case study specific visualizations and preprocessing can be found within the `ipynb` notebooks and in the `results`.
 
 The command used to generate the cystic fibrosis co-occurences is found under the scripts folder. This was a result of multiple rounds of cross validation with parameters with learning rates (1e-5, 1e-6, 1e-7), input priors (0.1, 1, 10),  output priors (0.1, 1, 10) and a rank of 3.
