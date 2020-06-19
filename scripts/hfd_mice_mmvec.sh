@@ -30,18 +30,12 @@ batch=10
 sub=100
 f=HFD
 
+dim=3
+run="${r}_${f}_dim${dim}_lr${lr}_beta1${beta1}_beta2${beta2}_sub${sub}_batch${batch}"
+summary="$../results/hfd_output"
+file1="../data/HFD/microbes.biom"
+file2="../data/HFD/metabolites.biom"
+metadata="../data/HFD/sample-metadata.txt"
+sbatch -N 1 -p gpu --gres=gpu:01 --wrap "mmvec paired-omics --microbe-file $file1 --metabolite-file $file2 --epochs 10000 --min-feature-count 10 --learning-rate 1e-4 --beta1 0.9 --beta2 0.99 --batch-size 50 --summary-dir $summary --checkpoint-interval 3600 --summary-interval 10 --arm-the-gpu --training-column Testing --metadata-file $metadata"
 
-for r in run10 run11 run12
-do
-    for dim in 3 5
-    do
- 	run="${r}_${f}_dim${dim}_lr${lr}_beta1${beta1}_beta2${beta2}_sub${sub}_batch${batch}"
- 	summary="${r}_${f}_results/summary_${run}"
- 	model="${r}_${f}_results/model_${run}.txt"
- 	ord="${r}_${f}_results/ordination_${run}.txt"
- 	file1="/mnt/home/jmorton/research/multiomics/data/${f}/microbes.biom"
- 	file2="/mnt/home/jmorton/research/multiomics/data/${f}/metabolites.biom"
-	metadata="/mnt/home/jmorton/research/multiomics/data/${f}/sample-metadata.txt"
- 	sbatch -N 1 -p gpu --gres=gpu:01 --wrap "rhapsody mmvec --microbe-file $file1 --metabolite-file $file2 --epochs 10000 --min-feature-count 10 --learning-rate 1e-4 --beta1 0.9 --beta2 0.99 --batch-size 50 --summary-dir $summary --checkpoint-interval 3600 --summary-interval 10 --arm-the-gpu --training-column Testing --metadata-file $metadata"
-	done
-done
+# The file of interest is `*_ordination.txt`.  This has been renamed to `omics-biplot.results` under the `hfd_output` folder.

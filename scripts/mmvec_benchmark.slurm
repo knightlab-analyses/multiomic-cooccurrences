@@ -22,7 +22,7 @@ source ~/venvs/mmvec-tf/bin/activate
 # conda activate mmvec
 
 cd /mnt/home/jmorton/research/multiomics/CF_small_benchmark
-directory="/mnt/home/jmorton/research/multiomics/CF_small_benchmark"
+directory="../results/benchmark_output/"
 # these parameters are for TF
 beta1=0.85
 beta2=0.9
@@ -34,16 +34,25 @@ f="CF_benchmark"
 
 for r in tfrun8 tfrun9 tfrun10
 do
+	mode='rel'
  	run="rel_${r}_dim${dim}_lr${lr}_beta1${beta1}_beta2${beta2}_batch${batch}"
- 	summary="rel_${r}_results/summary_${run}"
- 	model="rel_model_${run}.txt"
- 	ord="ordination_${run}.txt"
-	relfile1="table.rel.microbes.0.biom"
-	relfile2="table.rel.metabolites.0.biom"
-	absfile1="table.abs.microbes.0.biom"
-	absfile2="table.abs.metabolites.0.biom"
+ 	summary="CF_sims/${mode}/mmvec/rel_${r}_results/summary_${run}"
+ 	model="CF_sims/${mode}/mmvec/rel_model_${run}.txt"
+ 	ord="CF_sims/${mode}/mmvec/ordination_${run}.txt"
+	file1="table.rel.microbes.0.biom"
+	file2="table.rel.metabolites.0.biom"
 	metadata="metadata.0.txt"
  	sbatch -N 1 -p gpu --gres=gpu:01 --wrap "mmvec paired-omics --microbe-file $relfile1 --metabolite-file $relfile2 --epochs 100 --min-feature-count 10 --learning-rate 1e-3 --beta1 0.85 --beta2 0.9 --batch_size 50 --summary-dir $summary --checkpoint-interval 3600 --summary-interval 600 --arm-the-gpu --training-column Testing --metadata-file $metadata"
+
+
+	mode='abs'
+ 	run="rel_${r}_dim${dim}_lr${lr}_beta1${beta1}_beta2${beta2}_batch${batch}"
+ 	summary="CF_sims/${mode}/mmvec/rel_${r}_results/summary_${run}"
+ 	model="CF_sims/${mode}/mmvec/rel_model_${run}.txt"
+ 	ord="CF_sims/${mode}/mmvec/ordination_${run}.txt"
+	file1="table.rel.microbes.0.biom"
+	file2="table.rel.metabolites.0.biom"
+	metadata="metadata.0.txt"
 
  	run="abs_${r}_dim${dim}_lr${lr}_beta1${beta1}_beta2${beta2}_batch${batch}"
  	summary="abs_${r}_results/summary_${run}"
