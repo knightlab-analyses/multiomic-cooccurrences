@@ -45,3 +45,9 @@ All the data required to reproduce the analysis can be found under `data/`.
  - soils  : 16S and metabolomics abundances for biocrust study
  - HFD    : high fat diet study on mice. 16S, metabolomics, taxonomies, sample metadata and LCMS annotations
  - ihmp   : IBD multiomicscase study. Taxonomic profiles from metagenomics, 4 metabolomics datasets, sample metadata and LCMS annotations
+ 
+ # Rebuttal scripts
+ All of the scripts used in our response are below
+ https://github.com/knightlab-analyses/multiomic-cooccurrences/blob/rebuttal/ipynb/figure3-rerun.R
+ https://github.com/knightlab-analyses/multiomic-cooccurrences/blob/rebuttal/ipynb/bayesian-optimization.ipynb
+ https://github.com/knightlab-analyses/multiomic-cooccurrences/blob/rebuttal/ipynb/ground-truth-benchmark.ipynb
